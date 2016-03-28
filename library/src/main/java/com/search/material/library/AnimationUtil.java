@@ -1,8 +1,11 @@
 package com.search.material.library;
 
+import android.animation.Animator;
+import android.annotation.TargetApi;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 
 /**
  * Created by stadiko on 6/8/15.
@@ -22,6 +25,26 @@ public class AnimationUtil {
         boolean onAnimationEnd(View view);
 
         boolean onAnimationCancel(View view);
+    }
+
+    @TargetApi(21)
+    public static void revealView(View view) {
+        // get the center for the clipping circle
+        int cx = view.getWidth() / 2;
+        int cy = view.getHeight() / 2;
+
+        // get the final radius for the clipping circle
+        float finalRadius = (float) Math.hypot(cx, cy);
+
+        // create the animator for this view (the start radius is zero)
+        Animator anim =
+                ViewAnimationUtils.createCircularReveal(view, cx, cy, 0, finalRadius);
+
+        anim.setDuration(ANIMATION_DURATION_MEDIUM);
+
+        // make the view visible and start the animation
+        view.setVisibility(View.VISIBLE);
+        anim.start();
     }
 
     public static void crossFadeViews(View showView, View hideView) {
